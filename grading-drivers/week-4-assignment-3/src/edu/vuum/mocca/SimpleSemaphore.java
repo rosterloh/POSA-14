@@ -1,17 +1,14 @@
 package edu.vuum.mocca;
-
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @class SimpleSemaphore
  * 
- * @brief This class provides a simple counting semaphore
- *        implementation using Java a ReentrantLock and a
- *        ConditionObject (which is accessed via a Condition). It must
- *        implement both "Fair" and "NonFair" semaphore semantics,
- *        just liked Java Semaphores.
+ * @brief This class provides a simple counting semaphore implementation using
+ *        Java a ReentrantLock and a ConditionObject (which is accessed via a
+ *        Condition). It must implement both "Fair" and "NonFair" semaphore
+ *        semantics, just liked Java Semaphores.
  */
 public class SimpleSemaphore {
     /**
@@ -27,7 +24,7 @@ public class SimpleSemaphore {
     /**
      * Define a count of the number of available permits.
      */
-    // TODO - you fill in here.  Make sure that this data member will
+    // TODO - you fill in here. Make sure that this data member will
     // ensure its values aren't cached by multiple Threads..
 
     public SimpleSemaphore(int permits, boolean fair) {
@@ -63,8 +60,7 @@ public class SimpleSemaphore {
      * Return the number of permits available.
      */
     public int availablePermits() {
-        // TODO - you fill in here by changing null to the appropriate
-        // return value.
-        return null;
+        // TODO - you fill in here to return the correct result
+    	return 0;
     }
 }
