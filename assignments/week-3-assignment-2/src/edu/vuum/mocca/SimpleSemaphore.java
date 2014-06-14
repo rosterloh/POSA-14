@@ -52,10 +52,10 @@ public class SimpleSemaphore {
     	lock.lockInterruptibly();
     	
     	try {
-    		while(availablePermits == 0) {
+    		while(availablePermits <= 0) {
     			noPermitsAvailable.await();
     		}
-    		availablePermits--;    		
+    		--availablePermits;    		
     	} finally {
     		lock.unlock();
     	}
@@ -71,10 +71,10 @@ public class SimpleSemaphore {
     	lock.lock();
     	
     	try {
-    		while(availablePermits == 0) {
+    		while(availablePermits <= 0) {
     			noPermitsAvailable.awaitUninterruptibly();
     		}
-    		availablePermits--;    		
+    		--availablePermits;    		
     	} finally {
     		lock.unlock();
     	}
@@ -90,7 +90,9 @@ public class SimpleSemaphore {
     	
     	try {
     		availablePermits++;
-    		noPermitsAvailable.signal();
+    		// Only signal if waiters can make progress.
+    		if(availablePermits > 0)
+    			noPermitsAvailable.signal();
     	} finally {
     		lock.unlock();
     	}
@@ -102,6 +104,8 @@ public class SimpleSemaphore {
     public int availablePermits() {
         // TODO - you fill in here by changing null to the appropriate
         // return value.
+    	
+    	// No lock is needed as availablePermits is volatile.
         return availablePermits;
     }
 }
