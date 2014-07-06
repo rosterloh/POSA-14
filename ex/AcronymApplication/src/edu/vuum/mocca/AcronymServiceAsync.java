@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.http.AndroidHttpClient;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
@@ -34,6 +35,12 @@ public class AcronymServiceAsync extends Service {
      */
     private final static String TAG =
         AcronymServiceAsync.class.getCanonicalName();
+
+    /**
+     * Object that can invoke HTTP GET requests on URLs.
+     */
+    private final static AndroidHttpClient mClient =
+        AndroidHttpClient.newInstance("");
 
     /**
      * Called when a client (e.g., AcronymActivity) calls
@@ -77,14 +84,15 @@ public class AcronymServiceAsync extends Service {
              * callback.
              */
             @Override
-		public void expandAcronym(AcronymResults callback,
-                                          String acronym)
+            public void expandAcronym(AcronymResults callback,
+                                      String acronym)
                 throws RemoteException {
 
                 // Call the Acronym Web service to get the list of
                 // possible expansions of the designated acronym.
                 List<AcronymData> acronymResults = 
-                    AcronymDownloadUtils.getResults(acronym);
+                    AcronymDownloadUtils.getResults(mClient,
+                                                    acronym);
 
                 Log.d(TAG, "" + acronymResults.size() + " results for acronym: " + acronym);
 
@@ -93,4 +101,9 @@ public class AcronymServiceAsync extends Service {
                 callback.sendResults(acronymResults);
             }
 	};
+
+    public void onDestroy() {
+        mClient.close();
+        super.onDestroy();
+    }
 }
